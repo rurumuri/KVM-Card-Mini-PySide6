@@ -64,5 +64,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ runner.os }} Build
-          path: build/Mini-KVM.bin
+          path: Client/build/Mini-KVM.bin
           if-no-files-found: warn
