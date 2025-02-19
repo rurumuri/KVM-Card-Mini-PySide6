@@ -53,7 +53,7 @@ jobs:
       #if build fail, upload nuitka-crash-report.xml
       - name: Upload Nuitka Crash Report
         if: failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Nuitka Crash Report
           path: |
@@ -61,7 +61,7 @@ jobs:
 
       # Uploads artifacts
       - name: "Upload Artifacts for ${{ runner.os }}"
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ runner.os }} Build
           path: |
