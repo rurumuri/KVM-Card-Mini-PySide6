@@ -1,0 +1,73 @@
+
+# This is a workflow for building the kasa_cli executable on all three major platforms.
+
+name: Build-Cross-Platform
+
+# Controls when the workflow will run
+on:
+  push:
+    branches: ["cross-platform"]
+
+  # Allows you to run this workflow manually from the Actions tab 
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest] # windows-latest, ubuntu-latest,
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      # Check-out repository
+      - uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9" # Version range or exact version of a Python version to use, using SemVer's version range syntax
+          architecture: "x64" # optional x64 or x86. Defaults to x64 if not specified 
+          cache: "pip"
+          cache-dependency-path: Client/requirements.txt
+
+      # Install dependencies
+      - name: Install Dependencies
+        run: |
+          pip install -r Client/requirements.txt
+
+      # Build python script into a stand-alone exe
+      - uses: Nuitka/Nuitka-Action@main
+        with:
+          working-directory: ./Client
+          script-name: ./Mini-KVM.py
+          onefile: false
+          enable-plugins: pyside6
+          include-data-dir: ./resources=resources
+          include-qt-plugins: multimedia
+          disable-console: true
+          # macos-create-app-bundle: true
+          # macos-target-arch: universal
+          # macos-app-icon: ./resources/icons/icon.png
+          # macos-app-mode: gui
+
+      #if build fail, upload nuitka-crash-report.xml
+      - name: Upload Nuitka Crash Report
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: Nuitka Crash Report
+          path: |
+            **/nuitka-crash-report.xml
+
+      # Uploads artifacts
+      - name: "Upload Artifacts for ${{ runner.os }}"
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ runner.os }} Build
+          path: |
+            build/*.exe
+            build/*.bin
+            build/*.app/**/*
+          # path: | # 我也不知道别的平台安装包什么格式，所以就都上传了
+          #   Client/build/*
