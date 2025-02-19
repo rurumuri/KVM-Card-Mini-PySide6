@@ -65,8 +65,4 @@ jobs:
         with:
           name: ${{ runner.os }} Build
           path: |
-            build/*.exe
-            build/*.bin
-            build/*.app/**/*
-          # path: | # 我也不知道别的平台安装包什么格式，所以就都上传了
-          #   Client/build/*
+            build/*
