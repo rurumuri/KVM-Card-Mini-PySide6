@@ -66,8 +66,6 @@ jobs:
         with:
           name: ${{ runner.os }} Build
           path: |
-            Client/build/*.exe
-            Client/build/*.bin
-            Client/build/*.app/**/*
-          # path: | # 我也不知道别的平台安装包什么格式，所以就都上传了
-          #   Client/build/*
+            Client/build/Mini-KVM.dist/*.exe
+            Client/build/Mini-KVM.dist/*.bin
+            Client/build/Mini-KVM.dist/*.app/**/*
