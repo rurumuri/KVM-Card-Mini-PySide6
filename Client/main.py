@@ -2654,13 +2654,13 @@ def clear_splash():
 
 def main():
     argv = sys.argv
-    if dark_theme:
-        argv += [
-            "-platform",
-            "windows:darkmode=2",
-            "--style",
-            "Windows",
-        ]  # or "Fusion" ?
+    # if dark_theme:
+    #     argv += [
+    #         "-platform",
+    #         "windows:darkmode=2",
+    #         "--style",
+    #         "Windows",
+    #     ]  # or "Fusion" ?
     app = QApplication(argv)
     translator = QTranslator(app)
     if translation:
